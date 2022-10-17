@@ -16,6 +16,10 @@ const Meta = ({ title, description, keywords }: metaProps) => {
                 <title>{headTitle}</title>
                 <meta name="description" content={description} />
                 <meta name="keywords" content={keywords} />
+                <meta
+                    http-equiv="Content-Security-Policy"
+                    content="upgrade-insecure-requests"
+                ></meta>
                 <link rel="icon" href="/images/favicon.ico" />
             </Head>
         </>
