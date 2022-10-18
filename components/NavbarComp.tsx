@@ -13,8 +13,14 @@ import {
 import Image from "next/image";
 import { RiMenu4Line } from "react-icons/ri";
 import { BsPersonCircle } from "react-icons/bs";
+import { ImSearch } from "react-icons/im";
 import { IconContext } from "react-icons";
-import { handleSidebar, addSearchMovies, addMovies } from "../redux/stateSlice";
+import {
+    handleSidebar,
+    addSearchMovies,
+    addMovies,
+    toggleLoading,
+} from "../redux/stateSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { rootState } from "../redux/store";
 import Link from "next/link";
@@ -51,13 +57,17 @@ const NavbarComp = () => {
     };
 
     useEffect(() => {
+        dispatch(toggleLoading({ args: "true" }));
         getData()
             .then((data) => {
                 dispatch(addMovies({ args: data.Search }));
+
+                dispatch(toggleLoading({ args: "false" }));
             })
             .catch((err) => {
                 console.log(err);
             });
+        dispatch(toggleLoading({ args: "false" }));
     }, [searchMovies]);
 
     return (
@@ -76,24 +86,24 @@ const NavbarComp = () => {
                         </IconContext.Provider>
                     </Nav.Link>
                     <NavbarBrand>
-                        <Link href="/">
-                            <a
-                                className={
-                                    `d-flex align-items-center ms-3 ` +
-                                    homeModule.navBrand
-                                }
-                                // href="/"
-                            >
-                                <Image
-                                    src="/images/logo.png"
-                                    alt=""
-                                    width={35}
-                                    height={25}
-                                    className="d-inline-block"
-                                />
-                                <span className="ms-2">MovieFlix</span>
-                            </a>
-                        </Link>
+                        {/* <Link href="/"> */}
+                        <a
+                            className={
+                                `d-flex align-items-center ms-3 ` +
+                                homeModule.navBrand
+                            }
+                            href="/"
+                        >
+                            <Image
+                                src="/images/logo.png"
+                                alt=""
+                                width={35}
+                                height={25}
+                                className="d-inline-block"
+                            />
+                            <span className="ms-2">MovieFlix</span>
+                        </a>
+                        {/* </Link> */}
                     </NavbarBrand>
                     <Navbar.Toggle aria-controls="navbar-collapse"></Navbar.Toggle>
                     <Navbar.Collapse id="navbar-collapse">
@@ -116,7 +126,10 @@ const NavbarComp = () => {
                                 <NavDropdown.Item>Adventure</NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
-                        <Form className="ms-auto" onSubmit={handleMovieSearch}>
+                        <Form
+                            className="ms-auto d-flex gap-2"
+                            onSubmit={handleMovieSearch}
+                        >
                             <Form.Control
                                 type="search"
                                 placeholder="Search Movies"
@@ -124,6 +137,13 @@ const NavbarComp = () => {
                                 value={searchInput}
                                 onChange={(e) => setSearchInput(e.target.value)}
                             />
+                            <Button
+                                type="submit"
+                                variant="outline-dark"
+                                className="rounded-4"
+                            >
+                                <ImSearch />
+                            </Button>
                         </Form>
                         <Nav.Link className="d-flex align-items-center justify-content-start ms-lg-5 mt-2 mt-lg-0 text-light">
                             <BsPersonCircle />

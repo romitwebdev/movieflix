@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Data } from "../components/Data";
 
 // type of state
 interface stateType {
@@ -12,33 +13,15 @@ interface stateType {
     showSidebar: boolean;
     searchMovies: string;
     movieDetails: any;
+    loading: boolean;
 }
 
-// search the below movies name randomly and display it on homepage
-let randomInitialMovies = [
-    "hulk",
-    "superman",
-    "batman",
-    "terminator",
-    "stranger things",
-];
-
 const initialState: stateType = {
-    movies: [
-        {
-            Poster: "",
-            Title: "",
-            Type: "",
-            Year: "",
-            imdbID: "",
-        },
-    ],
+    movies: Data,
     showSidebar: false,
-    searchMovies:
-        randomInitialMovies[
-            Math.floor(Math.random() * randomInitialMovies.length)
-        ],
+    searchMovies: "terminator",
     movieDetails: {},
+    loading: true,
 };
 
 const stateSlice = createSlice({
@@ -75,10 +58,25 @@ const stateSlice = createSlice({
         ) => {
             state.movieDetails = action.payload.args;
         },
+
+        toggleLoading: (
+            state: stateType,
+            action: PayloadAction<{ args: string }>
+        ) => {
+            state.loading =
+                action.payload.args === "true"
+                    ? (state.loading = true)
+                    : (state.loading = false);
+        },
     },
 });
 
-export const { addMovies, handleSidebar, addSearchMovies, addMovieDetails } =
-    stateSlice.actions;
+export const {
+    addMovies,
+    handleSidebar,
+    addSearchMovies,
+    addMovieDetails,
+    toggleLoading,
+} = stateSlice.actions;
 
 export default stateSlice.reducer;

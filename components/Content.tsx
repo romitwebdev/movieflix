@@ -13,7 +13,9 @@ import Link from "next/link";
 const KEY = 56948020;
 
 const Content = () => {
-    const { movies } = useSelector((state: rootState) => state.stateSlice); //moives list
+    const { movies, loading } = useSelector(
+        (state: rootState) => state.stateSlice
+    ); //moives list
 
     const dispatch = useDispatch();
 
@@ -41,6 +43,13 @@ const Content = () => {
     return (
         <>
             <Row>
+                {loading ? (
+                    <div className="text-center">
+                        <Spinner variant="light" animation="border"></Spinner>
+                    </div>
+                ) : (
+                    ""
+                )}
                 {movies !== undefined && movies.length > 0 ? (
                     movies.map((mv) => {
                         return (
@@ -72,7 +81,7 @@ const Content = () => {
                                                 {mv.Year}
                                             </Card.Subtitle>
                                         </Card.Header>
-                                        <Card.Footer className="d-flex flex-md-row flex-column gap-2">
+                                        <Card.Footer className="d-flex flex-lg-row flex-column gap-2">
                                             <Button variant="info">
                                                 <Link
                                                     href={
