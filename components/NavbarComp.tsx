@@ -86,24 +86,24 @@ const NavbarComp = () => {
                         </IconContext.Provider>
                     </Nav.Link>
                     <NavbarBrand>
-                        {/* <Link href="/"> */}
-                        <a
-                            className={
-                                `d-flex align-items-center ms-3 ` +
-                                homeModule.navBrand
-                            }
-                            href="/"
-                        >
-                            <Image
-                                src="/images/logo.png"
-                                alt=""
-                                width={35}
-                                height={25}
-                                className="d-inline-block"
-                            />
-                            <span className="ms-2">MovieFlix</span>
-                        </a>
-                        {/* </Link> */}
+                        <Link href="/">
+                            <a
+                                className={
+                                    `d-flex align-items-center ms-3 ` +
+                                    homeModule.navBrand
+                                }
+                                // href="/"
+                            >
+                                <Image
+                                    src="/images/logo.png"
+                                    alt=""
+                                    width={35}
+                                    height={25}
+                                    className="d-inline-block"
+                                />
+                                <span className="ms-2">MovieFlix</span>
+                            </a>
+                        </Link>
                     </NavbarBrand>
                     <Navbar.Toggle aria-controls="navbar-collapse"></Navbar.Toggle>
                     <Navbar.Collapse id="navbar-collapse">
