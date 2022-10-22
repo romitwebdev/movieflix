@@ -37,11 +37,8 @@ const Home: NextPage<stateType> = ({ movies }) => {
         if (initialLoadData) {
             dispatch(addMovies({ args: movies }));
 
-            if (movies) {
-                dispatch(toggleInitialLoadData({ args: "false" }));
-            } else {
-                console.log("no movies");
-            }
+            dispatch(toggleInitialLoadData({ args: "false" }));
+
             dispatch(toggleLoading({ args: "false" }));
         }
     }, [movies]);
