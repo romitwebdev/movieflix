@@ -2,26 +2,37 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Data } from "../components/Data";
 
 // type of state
-interface stateType {
-    movies: {
-        Poster: string;
-        Title: string;
-        Type: string;
-        Year: string;
-        imdbID: string;
-    }[];
+export interface stateType {
+    movies:
+        | {
+              Poster: string;
+              Title: string;
+              Type: string;
+              Year: string;
+              imdbID: string;
+          }[];
     showSidebar: boolean;
     searchMovies: string;
     movieDetails: any;
     loading: boolean;
+    initialLoadData: boolean;
 }
 
 const initialState: stateType = {
-    movies: Data,
+    movies: [
+        {
+            Title: "The Incredible Hulk",
+            Year: "2008",
+            imdbID: "tt0800080",
+            Type: "movie",
+            Poster: "https://m.media-amazon.com/images/M/MV5BMTUyNzk3MjA1OF5BMl5BanBnXkFtZTcwMTE1Njg2MQ@@._V1_SX300.jpg",
+        },
+    ],
     showSidebar: false,
-    searchMovies: "terminator",
+    searchMovies: "",
     movieDetails: {},
     loading: true,
+    initialLoadData: true,
 };
 
 const stateSlice = createSlice({
@@ -68,6 +79,16 @@ const stateSlice = createSlice({
                     ? (state.loading = true)
                     : (state.loading = false);
         },
+
+        toggleInitialLoadData: (
+            state: stateType,
+            action: PayloadAction<{ args: string }>
+        ) => {
+            state.initialLoadData =
+                action.payload.args === "true"
+                    ? (state.initialLoadData = true)
+                    : (state.initialLoadData = false);
+        },
     },
 });
 
@@ -77,6 +98,7 @@ export const {
     addSearchMovies,
     addMovieDetails,
     toggleLoading,
+    toggleInitialLoadData,
 } = stateSlice.actions;
 
 export default stateSlice.reducer;

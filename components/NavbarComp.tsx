@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
     Button,
     Container,
-    FloatingLabel,
-    Form,
     Nav,
     Navbar,
     NavbarBrand,
     NavDropdown,
     NavLink,
+    Form,
 } from "react-bootstrap";
 import Image from "next/image";
 import { RiMenu4Line } from "react-icons/ri";
@@ -20,45 +19,49 @@ import {
     addSearchMovies,
     addMovies,
     toggleLoading,
+    toggleInitialLoadData,
 } from "../redux/stateSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { rootState } from "../redux/store";
+import { useDispatch } from "react-redux";
 import Link from "next/link";
 import homeModule from "../styles/Home.module.css";
 import { useRouter } from "next/router";
-
-const KEY = 56948020;
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
 
 const NavbarComp = () => {
     const [searchInput, setSearchInput] = useState<string>(""); //save the search value so we can store to searchMovies state
-    // searchMovies used to fetch the data
-    const { searchMovies } = useSelector(
-        (state: rootState) => state.stateSlice
-    );
+
     const router = useRouter(); // to push to homepage while searching movies from another page
 
     const dispatch = useDispatch();
 
     // sets the searchInput on submit
-    const handleMovieSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        router.push("/");
+    const handleSearchInput = (search: string) => {
+        setSearchInput(search);
         dispatch(addSearchMovies({ args: searchInput }));
-        setSearchInput("");
     };
 
-    // fetching the data
-    const getData = async () => {
+    // fetch data
+    const fetchData = async () => {
         let res = await fetch(
-            `http://www.omdbapi.com/?s=${searchMovies}&apikey=${KEY}`
+            `http://www.omdbapi.com/?s=${searchInput}&apikey=${publicRuntimeConfig.KEY}`
         );
         let data = await res.json();
+
         return data;
     };
 
-    useEffect(() => {
+    // fetch data on submit
+    const handleMovieSearch = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        dispatch(toggleInitialLoadData({ args: "false" }));
+
+        router.push("/");
+
         dispatch(toggleLoading({ args: "true" }));
-        getData()
+
+        fetchData()
             .then((data) => {
                 dispatch(addMovies({ args: data.Search }));
 
@@ -67,8 +70,9 @@ const NavbarComp = () => {
             .catch((err) => {
                 console.log(err);
             });
-        dispatch(toggleLoading({ args: "false" }));
-    }, [searchMovies]);
+
+        setSearchInput("");
+    };
 
     return (
         <>
@@ -135,7 +139,9 @@ const NavbarComp = () => {
                                 placeholder="Search Movies"
                                 className="rounded-5 bg-dark text-light border border-secondary"
                                 value={searchInput}
-                                onChange={(e) => setSearchInput(e.target.value)}
+                                onChange={(e) =>
+                                    handleSearchInput(e.target.value)
+                                }
                             />
                             <Button
                                 type="submit"

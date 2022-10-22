@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Alert, Button, Card, Col, Modal, Row, Spinner } from "react-bootstrap";
+import React from "react";
+import { Alert, Button, Card, Col, Row, Spinner } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { rootState } from "../redux/store";
-import {
-    addSearchMovies,
-    addMovies,
-    addMovieDetails,
-} from "../redux/stateSlice";
+import { addMovieDetails } from "../redux/stateSlice";
 import cardStyle from "../styles/Home.module.css";
 import Link from "next/link";
-
-const KEY = 56948020;
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
 
 const Content = () => {
     const { movies, loading } = useSelector(
@@ -22,7 +18,7 @@ const Content = () => {
     // fetch the movie details
     const fetchDetails = async (imdbID: string) => {
         let res = await fetch(
-            `http://www.omdbapi.com/?i=${imdbID}&apikey=${KEY}`
+            `http://www.omdbapi.com/?i=${imdbID}&apikey=${publicRuntimeConfig.KEY}`
         );
         let data = await res.json();
         return data;
@@ -42,14 +38,23 @@ const Content = () => {
 
     return (
         <>
-            <Row>
-                {loading ? (
-                    <div className="text-center">
-                        <Spinner variant="light" animation="border"></Spinner>
+            <Row className="pb-4">
+                {loading && (
+                    <div className={cardStyle.loadingSpinnerHolder}>
+                        <Spinner
+                            variant="light"
+                            animation="grow"
+                            className="me-2"
+                        ></Spinner>
+                        <Spinner
+                            variant="light"
+                            animation="grow"
+                            className="me-2"
+                        ></Spinner>
+                        <Spinner variant="light" animation="grow"></Spinner>
                     </div>
-                ) : (
-                    ""
                 )}
+
                 {movies !== undefined && movies.length > 0 ? (
                     movies.map((mv) => {
                         return (
@@ -57,7 +62,7 @@ const Content = () => {
                                 xs={12}
                                 md={6}
                                 lg={3}
-                                className="mt-3"
+                                className="mt-4"
                                 key={mv.imdbID}
                             >
                                 <Card>
@@ -81,7 +86,7 @@ const Content = () => {
                                                 {mv.Year}
                                             </Card.Subtitle>
                                         </Card.Header>
-                                        <Card.Footer className="d-flex flex-lg-row flex-column gap-2">
+                                        <Card.Footer className="d-flex flex-lg-row flex-column">
                                             <Button variant="info">
                                                 <Link
                                                     href={
@@ -100,7 +105,10 @@ const Content = () => {
                                                     </a>
                                                 </Link>
                                             </Button>
-                                            <Button variant="warning">
+                                            <Button
+                                                variant="warning"
+                                                className="mt-2 mt-lg-0 ms-lg-2"
+                                            >
                                                 <Link
                                                     href={`${mv.imdbID}/details`}
                                                 >
