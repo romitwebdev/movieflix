@@ -142,6 +142,7 @@ const NavbarComp = () => {
                                 onChange={(e) =>
                                     handleSearchInput(e.target.value)
                                 }
+                                required
                             />
                             <Button
                                 type="submit"

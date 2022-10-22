@@ -45,16 +45,23 @@ const Details = () => {
                                     </h1>{" "}
                                 </Alert>
                                 <ul>
-                                    <div className="d-flex gap-5">
-                                        <li>{movieDetails.Year}</li>
-                                        <li>{movieDetails.Rated}</li>
+                                    <div className="d-flex">
+                                        <li className="me-5">
+                                            {movieDetails.Year}
+                                        </li>
+                                        <li className="me-5">
+                                            {movieDetails.Rated}
+                                        </li>
                                         <li>{movieDetails.Runtime}</li>
                                     </div>
                                 </ul>
-                                <div className="d-flex align-items-center gap-2 py-2 border-top border-bottom border-dark">
-                                    <strong>IMDb RATING:</strong> <AiFillStar />
+                                <div className="d-flex align-items-center py-2 border-top border-bottom border-dark">
+                                    <strong className="me-2">
+                                        IMDb RATING:
+                                    </strong>{" "}
+                                    <AiFillStar />
                                     {movieDetails.imdbRating}
-                                    <Badge className="bg-dark" pill>
+                                    <Badge className="bg-dark ms-2" pill>
                                         {movieDetails.Genre}
                                     </Badge>
                                 </div>
