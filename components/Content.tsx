@@ -55,7 +55,7 @@ const Content = () => {
                     </div>
                 )}
 
-                {movies !== undefined && movies.length > 0 ? (
+                {movies !== undefined && movies?.length > 0 ? (
                     movies.map((mv) => {
                         return (
                             <Col
