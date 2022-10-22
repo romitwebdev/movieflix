@@ -23,7 +23,7 @@ export const getStaticProps = async () => {
     let movies = await res.json();
 
     return {
-        props: { movies: movies.Search },
+        props: { movies: movies.Search || null },
     };
 };
 
