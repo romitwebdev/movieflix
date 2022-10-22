@@ -23,7 +23,7 @@ export const getStaticProps = async () => {
     let movies = await res.json();
 
     return {
-        props: { movies: movies.Search || null },
+        props: { movies: movies.Search },
     };
 };
 
@@ -37,8 +37,11 @@ const Home: NextPage<stateType> = ({ movies }) => {
         if (initialLoadData) {
             dispatch(addMovies({ args: movies }));
 
-            dispatch(toggleInitialLoadData({ args: "false" }));
-
+            if (movies) {
+                dispatch(toggleInitialLoadData({ args: "false" }));
+            } else {
+                console.log("no movies");
+            }
             dispatch(toggleLoading({ args: "false" }));
         }
     }, [movies]);
