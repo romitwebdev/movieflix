@@ -41,7 +41,7 @@ const Home: NextPage<stateType> = ({ movies }) => {
 
             dispatch(toggleLoading({ args: "false" }));
         }
-    }, []);
+    }, [movies]);
 
     return (
         <div className={styles.container}>
