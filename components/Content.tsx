@@ -11,7 +11,7 @@ const { publicRuntimeConfig } = getConfig();
 const Content = () => {
     const { movies, loading } = useSelector(
         (state: rootState) => state.stateSlice
-    ); //moives list
+    ); //movies list
 
     const dispatch = useDispatch();
 
