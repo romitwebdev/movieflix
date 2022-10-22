@@ -16,7 +16,7 @@ import { useEffect } from "react";
 import getConfig from "next/config";
 const { serverRuntimeConfig } = getConfig();
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
     let res = await fetch(
         `http://www.omdbapi.com/?s="hulk"&apikey=${serverRuntimeConfig.KEY}`
     );
